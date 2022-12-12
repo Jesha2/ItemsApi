@@ -29,29 +29,21 @@ public class ItemService
     public List<Item> all()
     {
         //TODO implement this method
-
         return itemRepository.findAll();
-
     }
-    // Method to use if apppying HATEAOs
-//    public CollectionModel<EntityModel<Item>> all() {
-//
-//        List<EntityModel<Item>> items = itemRepository.findAll().stream()
-//                .map(item -> EntityModel.of(item,
-//                        linkTo(methodOn(ItemController.class).findItemById(item.getId())).withSelfRel(),
-//                        linkTo(methodOn(ItemController.class).getItems()).withRel("Items")))
-//                .collect(Collectors.toList());
-//
-//        return CollectionModel.of(items, linkTo(methodOn(ItemController.class).getItems()).withSelfRel());
-//    }
 
-//    public CollectionModel<EntityModel<Item>> getItemsByCategory(String category) {
-//
-//       // Item items = itemRepository.findItemByCategory(category);
-//        List<EntityModel<Item>> items =  itemRepository.findItemsByCategory( category);
-//
-//        return CollectionModel.of(items, linkTo(methodOn(ItemController.class).getItems()).withSelfRel());
-//    }
+    // Method to getall with HATEAOs
+    public CollectionModel<EntityModel<Item>> allHateaos() {
+
+        List<EntityModel<Item>> items = itemRepository.findAll().stream()
+                .map(item -> EntityModel.of(item,
+                        linkTo(methodOn(ItemController.class).findItemById(item.getId())).withSelfRel(),
+                        linkTo(methodOn(ItemController.class).getItems()).withRel("Items")))
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(items, linkTo(methodOn(ItemController.class).getItems()).withSelfRel());
+    }
+
     public Item save(Item item )
     {
         //TODO implement this method
@@ -81,7 +73,7 @@ public class ItemService
     }
 
 // to be used if you want the hyperlinks
-    public EntityModel<Item> findById(@PathVariable int id) {
+    public EntityModel<Item> findIemByIdH( int id) {
 
         Item item = itemRepository.findById(id) //
                 .orElseThrow(() -> new ItemNotFoundException(id));
@@ -90,10 +82,19 @@ public class ItemService
                 linkTo(methodOn(ItemController.class).findItemById(id)).withSelfRel(),
                 linkTo(methodOn(ItemController.class).getItems()).withRel("Items"));
     }
+
+
     //    public Item findItemByCategory( String category )
 //    {
 //        //TODO implement this method
 //        Item ItemToFind =itemRepository.findItemByCategory(category);
 //        return ItemToFind;
+//    }
+    //    public CollectionModel<EntityModel<Item>> getItemsByCategory(String category) {
+//
+//       // Item items = itemRepository.findItemByCategory(category);
+//        List<EntityModel<Item>> items =  itemRepository.findItemsByCategory( category);
+//
+//        return CollectionModel.of(items, linkTo(methodOn(ItemController.class).getItems()).withSelfRel());
 //    }
 }

@@ -36,8 +36,6 @@ public class ItemController{
         return itemRepository.findAll();
     }*/
 
-
-
     @CrossOrigin
     @GetMapping( "/all" )
     public Iterable<Item> getItems()
@@ -45,17 +43,11 @@ public class ItemController{
         return itemService.all();
     }
 
-//    @CrossOrigin
-//    @GetMapping( "/all" )
-//    public CollectionModel<EntityModel<Item>> getItems() {
-//        return itemService.all();
-//    }
-
-//    @CrossOrigin
-//    @GetMapping("/{category}" )
-//    public CollectionModel<EntityModel<Item>> getItemsByCategory(@PathVariable String category) {
-//        return itemService.getItemsByCategory(category);
-//    }
+    @CrossOrigin
+    @GetMapping( "/allH" )// get the items with Hateoas by appending the endpoint with H
+    public CollectionModel<EntityModel<Item>> getItemsH() {
+        return itemService.allHateaos();
+    }
 
     @CrossOrigin
     @PostMapping
@@ -64,28 +56,19 @@ public class ItemController{
         return itemService.save( new Item( itemDto) );
     }
 
-    @GetMapping( "/{id}" )
+    @GetMapping( "/{id}" )//To find an item by Id
     public Item findItemById( @PathVariable Integer id )
     {
         return itemService.findItemById( id );
     }
-//    @GetMapping( "/{id}" )
-//    public EntityModel<Item>  findItemById( @PathVariable Integer id )
-//    {
-//        return itemService.findById( id );
-//    }
 
-//    @GetMapping("/{id}")
-//    EntityModel<Item> one(@PathVariable int id) {
-//
-//        Item item = repository.findById(id) //
-//                .orElseThrow(() -> new ItemNotFoundException(id));
-//
-//        return EntityModel.of(item, //
-//                linkTo(methodOn(ItemController.class).one(id)).withSelfRel(),
-//                linkTo(methodOn(ItemController.class).getItems()).withRel("items"));
-//    }
-    @PutMapping( "/{id}" )
+    @GetMapping( "/{id}H" )// get an item by id  with Hateoas by appending the endpoint with H
+    public EntityModel<Item> findItemByIdH( @PathVariable Integer id )
+    {
+        return itemService.findIemByIdH( id );
+    }
+
+    @PutMapping( "/{id}" )// to update an item when the id and the itemDTO is available
     public Item update( @RequestBody ItemDto itemDto, @PathVariable Integer id )
     {
        Item  item = itemService.findItemById( id );
@@ -109,5 +92,13 @@ public class ItemController{
     {
         itemService.deleteAll();
     }
+
+
+
+    //    @CrossOrigin
+//    @GetMapping("/{category}" )
+//    public CollectionModel<EntityModel<Item>> getItemsByCategory(@PathVariable String category) {
+//        return itemService.getItemsByCategory(category);
+//    }
 
 }
