@@ -51,11 +51,11 @@ public class ItemController{
 //        return itemService.all();
 //    }
 
-    @CrossOrigin
-    @GetMapping("/{category}" )
-    public CollectionModel<EntityModel<Item>> getItemsByCategory(@PathVariable String category) {
-        return itemService.getItemsByCategory(category);
-    }
+//    @CrossOrigin
+//    @GetMapping("/{category}" )
+//    public CollectionModel<EntityModel<Item>> getItemsByCategory(@PathVariable String category) {
+//        return itemService.getItemsByCategory(category);
+//    }
 
     @CrossOrigin
     @PostMapping
