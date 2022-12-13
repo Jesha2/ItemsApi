@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,18 +29,6 @@ public class ItemService
     {
         //TODO implement this method
         return itemRepository.findAll();
-    }
-
-    // Method to getall with HATEAOs
-    public CollectionModel<EntityModel<Item>> allHateaos() {
-
-        List<EntityModel<Item>> items = itemRepository.findAll().stream()
-                .map(item -> EntityModel.of(item,
-                        linkTo(methodOn(ItemController.class).findItemById(item.getId())).withSelfRel(),
-                        linkTo(methodOn(ItemController.class).getItems()).withRel("Items")))
-                .collect(Collectors.toList());
-
-        return CollectionModel.of(items, linkTo(methodOn(ItemController.class).getItems()).withSelfRel());
     }
 
     public Item save(Item item )
@@ -72,15 +59,28 @@ public class ItemService
         return this.itemRepository.findById(itemId).get();
     }
 
-// to be used if you want the hyperlinks
+    //           *******HATEOAS************** //
+
+    // Method to getall with
+    public CollectionModel<EntityModel<Item>> allHateoas() {
+
+        List<EntityModel<Item>> items = itemRepository.findAll().stream()
+                .map(item -> EntityModel.of(item,
+                        linkTo(methodOn(ItemController.class).findItemByIdH(item.getId())).withSelfRel(),
+                        linkTo(methodOn(ItemController.class).getItemsH()).withRel("Items")))
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(items, linkTo(methodOn(ItemController.class).getItems()).withSelfRel());
+    }
+    // to be used if you want the hyperlinks
     public EntityModel<Item> findIemByIdH( int id) {
 
         Item item = itemRepository.findById(id) //
                 .orElseThrow(() -> new ItemNotFoundException(id));
 
         return EntityModel.of(item, //
-                linkTo(methodOn(ItemController.class).findItemById(id)).withSelfRel(),
-                linkTo(methodOn(ItemController.class).getItems()).withRel("Items"));
+                linkTo(methodOn(ItemController.class).findItemByIdH(id)).withSelfRel(),
+                linkTo(methodOn(ItemController.class).getItemsH()).withRel("Items"));
     }
 
 

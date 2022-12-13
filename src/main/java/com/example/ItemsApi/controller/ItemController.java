@@ -1,7 +1,5 @@
 package com.example.ItemsApi.controller;
 
-//import com.example.ItemsApi.repository.ItemRepository;
-
 import com.example.ItemsApi.repository.entity.Item;
 import com.example.ItemsApi.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,44 +7,20 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
-//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
 @RequestMapping("/item")
 public class ItemController{
-
-//    final ItemRepository itemRepository;
-//    public ItemController(@Autowired ItemRepository itemRepository )
-//    {
-//        this.itemRepository = itemRepository;
-//    }
-
     final ItemService itemService;
-
-
     public ItemController( @Autowired ItemService itemService )
     {
         this.itemService = itemService;
     }
-
-    /* @GetMapping
-    public Iterable<Item> getItems(){
-
-        return itemRepository.findAll();
-    }*/
 
     @CrossOrigin
     @GetMapping( "/all" )
     public Iterable<Item> getItems()
     {
         return itemService.all();
-    }
-
-    @CrossOrigin
-    @GetMapping( "/allH" )// get the items with Hateoas by appending the endpoint with H
-    public CollectionModel<EntityModel<Item>> getItemsH() {
-        return itemService.allHateaos();
     }
 
     @CrossOrigin
@@ -60,12 +34,6 @@ public class ItemController{
     public Item findItemById( @PathVariable Integer id )
     {
         return itemService.findItemById( id );
-    }
-
-    @GetMapping( "/{id}H" )// get an item by id  with Hateoas by appending the endpoint with H
-    public EntityModel<Item> findItemByIdH( @PathVariable Integer id )
-    {
-        return itemService.findIemByIdH( id );
     }
 
     @PutMapping( "/{id}" )// to update an item when the id and the itemDTO is available
@@ -93,12 +61,17 @@ public class ItemController{
         itemService.deleteAll();
     }
 
+     //          ***************HATEOAS***************   //
+     @CrossOrigin
+     @GetMapping( "/allH" )// get the items with Hateoas by appending the endpoint with H
+     public CollectionModel<EntityModel<Item>> getItemsH() {
+         return itemService.allHateoas();
+     }
 
-
-    //    @CrossOrigin
-//    @GetMapping("/{category}" )
-//    public CollectionModel<EntityModel<Item>> getItemsByCategory(@PathVariable String category) {
-//        return itemService.getItemsByCategory(category);
-//    }
+    @GetMapping( "/{id}H" )// get an item by id with Hateoas by appending the endpoint with H
+    public EntityModel<Item> findItemByIdH( @PathVariable Integer id )
+    {
+        return itemService.findIemByIdH( id );
+    }
 
 }

@@ -11,6 +11,5 @@ import java.util.List;
     // CRUD refers Create, Read, Update, Delete
     public interface ItemRepository extends JpaRepository<Item, Integer>
     {
-        //public Item findItemByCategory(String category);
-        //public List<EntityModel<Item>>  findItemsByCategory(String category);
+        //public List<EntityModel<Item>>  findByCategory(String category);
     }
